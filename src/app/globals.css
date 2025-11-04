@@ -1,8 +1,20 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+@layer components {
+  .my-title-container p {
+    text-align: justify;
+    text-align-last: justify;
+  }
+
+  .my-title-container p::after {
+    content: '';
+    width: 100%;
+    display: inline-block;
+  }
 }
 
 @theme inline {
@@ -10,12 +22,85 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-primary: var(--font-primary-suisse);
+  --font-primary-semibold: var(--font-primary-suisse-semibold);
+  --font-secondary: var(--font-secondary-obviously);
+
+  --text-custom: clamp(
+    1.775 * 1rem,
+    (
+      (1.775 - ((2 - 1.775)/ (100 - 20) * 20)) * 1rem +
+        ((2 - 1.775)/ (100 - 20)) * 100vw
+    ),
+    2 * 1rem
+  );
+  --text-custom--line-height: 1;
+  --text-custom--letter-spacing: -0.005em;
+  --text-custom--font-weight: 800;
+
+  --text-menu: clamp(
+    3.5 * 1rem,
+    (
+      (3.5 - ((11.25 - 3.5)/ (100 - 20) * 20)) * 1rem +
+        ((11.25 - 3.5)/ (100 - 20)) * 100vw
+    ),
+    11.25 * 1rem
+  );
+  --text-menu--line-height: 0.85;
+  --text-menu--letter-spacing: 0em;
+  --text-menu--font-weight: 800;
+
+  --swatch-yellow: #ffd900;
+  --swatch-light: #fff6e5;
+  --swatch-dark: #120011;
+
+  --site-margin: clamp(1rem, 0.714286rem + 1.42857vw, 2rem);
+  --spacing-bottom: clamp(
+    0.875 * 1rem,
+    (
+      (0.875 - ((1 - 0.875)/ (100 - 20) * 20)) * 1rem +
+        ((1 - 0.875)/ (100 - 20)) * 100vw
+    ),
+    1 * 1rem
+  );
+  --site-gutter: 1rem;
+  --spacing-space-1: clamp(
+    0.375 * 1rem,
+    (
+      (0.375 - ((0.5 - 0.375)/ (100 - 20) * 20)) * 1rem +
+        ((0.5 - 0.375)/ (100 - 20)) * 100vw
+    ),
+    0.5 * 1rem
+  );
+  --spacing-space-2: clamp(
+    0.625 * 1rem,
+    (
+      (0.625 - ((0.75 - 0.625)/ (100 - 20) * 20)) * 1rem +
+        ((0.75 - 0.625)/ (100 - 20)) * 100vw
+    ),
+    0.75 * 1rem
+  );
+  --spacing-space-3: clamp(
+    0.875 * 1rem,
+    (
+      (0.875 - ((1 - 0.875)/ (100 - 20) * 20)) * 1rem +
+        ((1 - 0.875)/ (100 - 20)) * 100vw
+    ),
+    1 * 1rem
+  );
+
+  @keyframes slide-in {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #121212;
+    --foreground: #120011;
   }
 }
 
@@ -23,4 +108,29 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis.lenis-autoToggle {
+  transition-property: overflow;
+  transition-duration: 1ms;
+  transition-behavior: allow-discrete;
 }
