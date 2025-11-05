@@ -13,45 +13,47 @@ export default function NavBar() {
   //handle hide and show on scroll
   const container = useRef<HTMLDivElement>(null);
   const lastScroll = useRef(0);
+  const showNavRef = useRef<(() => void) | null>(null);
+  const hideNavRef = useRef<(() => void) | null>(null);
   const lastTriggerY = useRef(0);
   const tl = useRef(null);
   useGSAP(
     () => {
-      if (!container.current) return;
-      const navArr = gsap.utils.toArray('.animateMenuOnScroll');
-      tl.current = gsap
-        .timeline({
-          paused: true,
-          defaults: { ease: 'power3.out' },
-        })
-        .to(
-          navArr[0],
-          {
-            x: '-150%',
-            // ease: 'power3.out', // easing function
-            duration: 0.5,
-          },
-          '<'
-        )
-        .to(
-          navArr[1].children,
-          {
-            y: '-100',
-            stagger: 0.04,
-            // ease: 'power3.out',
-            duration: 0.4,
-          },
-          '<'
-        )
-        .to(
-          navArr[2],
-          {
-            x: '150%',
-            // ease: 'power3.out',
-            duration: 0.5,
-          },
-          '<'
-        );
+      const navArr = gsap.utils.toArray('.animateMenuOnScroll') as any;
+      showNavRef.current = () => {
+        gsap.to(navArr[1].children, {
+          y: 0,
+          stagger: 0.1, // 0.1 seconds between when each ".box" element starts animating
+          duration: 0.4, // each animation duration
+          ease: 'power3.out', // easing function
+        });
+        gsap.to(navArr[0], {
+          x: 0,
+          ease: 'power3.out', // easing function
+          duration: 0.8,
+        });
+        gsap.to(navArr[2], {
+          x: 0,
+          ease: 'power3.out',
+          duration: 0.8,
+        });
+      };
+      hideNavRef.current = () => {
+        gsap.to(navArr[1].children, {
+          y: '-200',
+          stagger: 0.05,
+        });
+        gsap.to(navArr[0], {
+          x: '-150%',
+          ease: 'power3.out', // easing function
+          duration: 0.8,
+        });
+        gsap.to(navArr[2], {
+          x: '150%',
+          ease: 'power3.out',
+          duration: 0.8,
+        });
+      };
     },
     { scope: container }
   );
@@ -74,14 +76,16 @@ export default function NavBar() {
       const currentScroll = window.scrollY;
       const diff = Math.abs(currentScroll - lastTriggerY.current);
       // Only trigger when user scrolled at least 50px since last animation
-      if (diff < THRESHOLD) return;
+      if (diff < THRESHOLD || !hideNavRef.current || !showNavRef.current)
+        return;
 
       if (currentScroll > lastScroll.current) {
-        // hideMidleMav();
-        tl.current.play();
+        hideNavRef.current();
+        // tl.current.play();
       } else {
-        tl.current.reverse();
+        // tl.current.reverse();
         // showMidleNav();
+        showNavRef.current();
       }
       lastScroll.current = currentScroll;
       lastTriggerY.current = currentScroll;
