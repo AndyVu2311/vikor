@@ -20,6 +20,7 @@ const eslintConfig = [
     plugins: ['prettier'],
     rules: {
       'prettier/prettier': 'error',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   }),
   {

@@ -108,13 +108,13 @@ export default function NavBar() {
         className='fixed z-10 flex w-full items-center justify-between px-(--site-margin) pt-(--site-margin)'
       >
         {/* 1 */}
-        <a
+        <Link
           href='/'
           // ref={navComponentsRef}
           className='font-secondary animateMenuOnScroll text-custom w-fit rounded-sm bg-(--swatch-dark) p-(--spacing-space-1) text-(--swatch-light)'
         >
           Vikor Design & Build
-        </a>
+        </Link>
         {/* 2 */}
         <ul
           className='animateMenuOnScroll hidden gap-(--spacing-space-1) md:flex'
